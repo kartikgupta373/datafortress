@@ -1,0 +1,67 @@
+/* Apply basic styling to the navigation bar */
+.navbar {
+    background-color: #d7d7d7; /* Grey background color */
+    color: white; /* Text color */
+    padding: 10px; /* Add some padding for better spacing */
+}
+
+/* Style the buttons */
+.button {
+    background-color: #008CBA; /* Button background color */
+    color: rgb(255, 255, 255); /* Button text color */
+    border: none; /* Remove button border */
+    padding: 10px 20px; /* Add padding to the button */
+    text-align: center; /* Center the button text */
+    text-decoration: none; /* Remove underlines from links */
+    display: inline-block; /* Make the button inline */
+    font-size: 16px; /* Set the font size */
+    margin: 10px; /* Add margin to separate buttons */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Style the "Login" button */
+.login-button {
+    background-color: #008CBA; /* Button background color */
+}
+
+/* signup button */
+.signup-button {
+    background-color: #008CBA; /* Button background color */
+}
+
+/* Style the "Logout" button */
+.logout-button {
+    background-color: #760000; /* Button background color */
+}
+
+/* Apply hover effect to buttons */
+.button:hover {
+    opacity: 0.8; /* Reduce opacity on hover */
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+/* Style form labels and input fields */
+.form-item {
+    margin-bottom: 10px;
+}
+
+.form-item label {
+    display: block;
+    font-weight: bold;
+}
+
+.form-item input[type="text"],
+.form-item input[type="file"],
+.form-item select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}

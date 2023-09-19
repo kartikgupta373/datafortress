@@ -1,0 +1,14 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'stylehome.css' %}">
+
+
+<h1>Welcome {{user.username}} </h1>
+<h2>As: {{ user.groups.all.0 }}</h2>
+
+
+<a class='button logout-button' href='logout'>Logout</a>
+
+<a class='button login-button' href='upload_video'>Upload Video</a>
+
+<a class='button login-button' href='video_list'>List of Videos</a>
+

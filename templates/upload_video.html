@@ -1,0 +1,23 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'stylehome.css' %}">
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class=form-item>
+        <label for="{{ form.title.id_for_label }}">Title:</label>
+        {{ form.title }}
+    </div>
+    <div class=form-item>
+        <label for="{{ form.description.id_for_label }}">Description:</label>
+        {{ form.description }}
+    </div>
+    <div class=form-item>
+        <label for="{{ form.video_file.id_for_label }}">Video File:</label>
+        {{ form.video_file }}
+    </div>
+    <div class=form-item>
+        <label for="{{ form.is_public.id_for_label }}">Public(Yes/No):</label>
+        {{ form.is_public }}
+    </div>
+    <button class='button login-button' type="submit">Upload</button>
+</form>
