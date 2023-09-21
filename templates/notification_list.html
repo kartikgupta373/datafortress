@@ -1,0 +1,29 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'stylehome.css' %}">
+
+<body>
+
+    <h1>Your Notifications</h1>
+    <ul>
+        {% for notification in notifications %}
+            <li>
+                {% if not notification.is_read %}
+                    <strong>{{ notification.sender }}:</strong>
+                {% else %}
+                    {{ notification.sender }}:
+                {% endif %}
+                {{ notification.message }}
+                <br>
+                <small>{{ notification.timestamp }}</small>
+            
+                <a href="{% url 'delete_notification' notification.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No notifications</li>
+        {% endfor %}
+
+    </ul>
+
+    <a class='button login-button' href="{% url 'welcome_creator' %}">Creator Home</a>
+
+</body>

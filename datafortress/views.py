@@ -2,12 +2,11 @@ import os
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth.models import User, auth, Group
 from django.contrib import messages
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, VideoForm, NotificationForm
 from django.contrib.auth import login, authenticate
-from .forms import VideoForm
-from .models import Video
-from django.contrib.auth.decorators import user_passes_test
-
+from .models import Video, Notification
+from django.contrib.auth.decorators import user_passes_test, login_required
+from django.conf import settings
 
 
 def index(request):
@@ -78,13 +77,19 @@ def success(request):
     return render(request , 'success.html')
 
 @user_passes_test(user_in_editor)
+@login_required
 def upload_video(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
-        if form.is_valid():
+        notif_form = NotificationForm(request.user, request.POST)
+        if form.is_valid() and notif_form.is_valid():
             try:
                 form.save()
-                return redirect('video_list')
+                notification = notif_form.save(commit=False)
+                notification.sender = request.user
+                notification.save()
+                messages.info(request , "Video Uploaded Successfully.")
+                return redirect('upload_video')
             except Exception as e:
                 error_message = f"An error occurred during file upload: {str(e)}"
                 return render(request, 'upload_error.html', {'error_message': error_message})
@@ -93,18 +98,37 @@ def upload_video(request):
             return render(request, 'upload_error.html', {'error_message': error_message})
     else:
         form = VideoForm()
-    return render(request, 'upload_video.html', {'form': form})
+        notif_form = NotificationForm(request.user)
+    return render(request, 'upload_video.html', {'form': form , 'notif_form' : notif_form})
 
 
-@user_passes_test(user_in_editor)
+@login_required
 def video_list(request):
     videos = Video.objects.all()
     return render(request, 'video_list.html', {'videos':videos})
 
-
+@login_required
 def delete_video(request, video_id):
     video = get_object_or_404(Video, pk=video_id)
+    video_path = os.path.join(settings.MEDIA_ROOT, str(Video.video_file))
     if request.method == 'POST':
         video.delete()
+    if os.path.exists(video_path):
+        os.remove(video_path)
     return redirect('video_list')
 
+
+
+@login_required
+def notification_list(request):
+    # Retrieve notifications for the current user (creator)
+    notifications = Notification.objects.filter(recipient=request.user).order_by('-timestamp')
+    return render(request, 'notification_list.html', {'notifications': notifications})
+
+
+@login_required
+def delete_notification(request, notification_id):
+    notification = get_object_or_404(Notification, pk=notification_id)
+    if notification.recipient == request.user:
+        notification.delete()
+    return redirect('notification_list')

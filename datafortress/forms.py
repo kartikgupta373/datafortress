@@ -6,7 +6,7 @@ from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.contrib.auth.password_validation import validate_password
 from django.utils.translation import gettext_lazy as _
 from .validators import *
-from .models import Video
+from .models import Video, Notification
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
@@ -63,3 +63,14 @@ class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
         fields = ['title', 'description', 'video_file', 'is_public']
+        
+        
+class NotificationForm(forms.ModelForm):
+    class Meta:
+        model = Notification
+        fields = ['recipient', 'message']
+
+    def __init__(self, editor, *args, **kwargs):
+        super(NotificationForm, self).__init__(*args, **kwargs)
+        # Limit the recipient choices to users in the "creator" group
+        self.fields['recipient'].queryset = User.objects.filter(groups__name='creator')

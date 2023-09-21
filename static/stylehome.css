@@ -39,7 +39,7 @@
     opacity: 0.8; /* Reduce opacity on hover */
 }
 
-form {
+.form {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
