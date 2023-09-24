@@ -68,7 +68,7 @@ class VideoForm(forms.ModelForm):
 class NotificationForm(forms.ModelForm):
     class Meta:
         model = Notification
-        fields = ['recipient', 'message']
+        fields = ['recipient', 'message', 'phone']
 
     def __init__(self, editor, *args, **kwargs):
         super(NotificationForm, self).__init__(*args, **kwargs)

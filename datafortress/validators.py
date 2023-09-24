@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 import re
 
 def validate_password_special_characters(value):
-    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', value):
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>_]', value):
         raise ValidationError("The password must contain at least one special character.")
 
 def validate_password_has_uppercase(value):

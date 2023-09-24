@@ -25,6 +25,10 @@
             {{ notif_form.recipient }}
         </div>
         <div class=form-item>
+            <label for="{{ notif_form.phone.id_for_label }}">Phone number(with country code):</label>
+            {{ notif_form.phone }}
+        </div>
+        <div class=form-item>
             <label for="{{ notif_form.message.id_for_label }}">Notification Message:</label>
             {{ notif_form.message }}
         </div>

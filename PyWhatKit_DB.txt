@@ -1,0 +1,25 @@
+Date: 24/9/2023
+Time: 11:8
+Phone Number: ++919205148513
+Message: A default message of video upload :p
+--------------------
+Date: 24/9/2023
+Time: 11:9
+Phone Number: ++918709530219
+Message: Sent from my Django Application.
+--------------------
+Date: 24/9/2023
+Time: 11:14
+Phone Number: ++918709530219
+Message: This is a cool notification ehehehe
+--------------------
+Date: 24/9/2023
+Time: 11:16
+Phone Number: ++918709530219
+Message: This notif is for a chuku baby that says : meow
+--------------------
+Date: 24/9/2023
+Time: 11:19
+Phone Number: ++919205148513
+Message: A new notif wow
+--------------------

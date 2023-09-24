@@ -7,6 +7,8 @@ from django.contrib.auth import login, authenticate
 from .models import Video, Notification
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.conf import settings
+from .whatsapp_utils import send_whatsapp_message
+from django.http import HttpResponse
 
 
 def index(request):
@@ -88,8 +90,16 @@ def upload_video(request):
                 notification = notif_form.save(commit=False)
                 notification.sender = request.user
                 notification.save()
+                to_number = notif_form.cleaned_data['phone']
+                message = notif_form.cleaned_data['message'] 
+                success, error_message = send_whatsapp_message(to_number, message)
                 messages.info(request , "Video Uploaded Successfully.")
-                return redirect('upload_video')
+                if success:
+                    messages.info(request , "Notification Sent Successfully.")
+                    return redirect('upload_video')
+                else:
+                    error_message = f"Error sending WhatsApp notification: {str(e)}"
+                    return redirect('upload_video')
             except Exception as e:
                 error_message = f"An error occurred during file upload: {str(e)}"
                 return render(request, 'upload_error.html', {'error_message': error_message})
