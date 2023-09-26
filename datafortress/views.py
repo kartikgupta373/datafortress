@@ -87,18 +87,20 @@ def upload_video(request):
         if form.is_valid() and notif_form.is_valid():
             try:
                 form.save()
+                title = form.cleaned_data['title']
                 notification = notif_form.save(commit=False)
                 notification.sender = request.user
-                notification.save()
                 to_number = notif_form.cleaned_data['phone']
-                message = notif_form.cleaned_data['message'] 
+                new_message = notif_form.cleaned_data['message']
+                message = f"Title: {title}, Message: {new_message}"
+                notification.save() 
                 success, error_message = send_whatsapp_message(to_number, message)
                 messages.info(request , "Video Uploaded Successfully.")
                 if success:
                     messages.info(request , "Notification Sent Successfully.")
                     return redirect('upload_video')
                 else:
-                    error_message = f"Error sending WhatsApp notification: {str(e)}"
+                    messages.info(request, "Error sending WhatsApp notification.")
                     return redirect('upload_video')
             except Exception as e:
                 error_message = f"An error occurred during file upload: {str(e)}"

@@ -6,6 +6,7 @@
     <h1>Your Notifications</h1>
     <ul>
         {% for notification in notifications %}
+            {% for video_title in video_titles %}
             <li>
                 {% if not notification.is_read %}
                     <strong>{{ notification.sender }}:</strong>
