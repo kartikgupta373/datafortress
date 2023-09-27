@@ -144,3 +144,4 @@ def delete_notification(request, notification_id):
     if notification.recipient == request.user:
         notification.delete()
     return redirect('notification_list')
+
