@@ -17,7 +17,7 @@ class Notification(models.Model):
     recipient = models.ForeignKey(User, related_name='received_notifications', on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    phone = models.CharField(max_length=15, default='+919205148513')
+    phone = models.CharField(max_length=15, default='')
     is_read = models.BooleanField(default=False)
     
     def mark_as_read(self):
