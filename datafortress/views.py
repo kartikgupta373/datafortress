@@ -8,7 +8,6 @@ from .models import Video, Notification
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.conf import settings
 from .whatsapp_utils import send_whatsapp_message
-from django.http import HttpResponse
 
 
 def index(request):

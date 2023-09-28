@@ -8,8 +8,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    
-    
+
+    <script>
+        document.getElementById('my-input-box').addEventListener('click', function() {
+            document.getElementById('hidden-menu').classList.remove('hidden');
+        });
+          
+        document.getElementById('hidden-menu').addEventListener('click', function() {
+            document.getElementById('hidden-menu').classList.add('hidden');
+        });
+    </script>
+
+
 </head>
 <body>
     
@@ -29,10 +39,10 @@
 
         <label for="password">Password</label>
         {{ form.password1 }}
-        
+            <p style="font-size:15px;">The password must contain at least one special character and uppercase letter.</p>
         <label for="password">Password Confirmation</label>
         {{ form.password2 }}
-
+        
         <div class="role-container">
             <label for="role">Role:</label>
             <div class="role-select">
@@ -42,18 +52,25 @@
               <label for="role_creator">Creator</label>
             </div>
           </div>
-          <br></br>
         <div >
             {% if form.password2.errors %}
-                    <div>
-                        <p class="alert alert-danger">{{ form.password2.errors }}</p>
-                    </div>
+                <div class="alert alert-danger">
+                    <ul>
+                    {% for error in form.password2.errors %}
+                        <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
             {% endif %}
         
             {% if form.password1.errors %}
-                    <div>
-                        <p class="alert alert-danger">{{ form.password1.errors }}</p>
-                    </div>
+                <div class="alert alert-danger">
+                    <ul>
+                    {% for error in form.password1.errors %}
+                        <li class="alert alert-danger">{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
             {% endif %}
         
             {% if form.username.errors %}
