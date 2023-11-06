@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Video(models.Model):
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.CharField(max_length=500)
     video_file = models.FileField(upload_to='media/')
     is_public = models.CharField(max_length=20)
     
@@ -15,7 +15,7 @@ class Video(models.Model):
 class Notification(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications_sent')
     recipient = models.ForeignKey(User, related_name='received_notifications', on_delete=models.CASCADE)
-    message = models.TextField()
+    message = models.CharField(max_length=200)
     timestamp = models.DateTimeField(auto_now_add=True)
     phone = models.CharField(max_length=15, default='')
     is_read = models.BooleanField(default=False)

@@ -1,42 +1,64 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'stylehome.css' %}">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Upload Video</title>
+    <link rel="stylesheet" href="{% static 'stylelogin.css' %}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    
+  <style>
+    
+  </style>
+
+</head>
 <body>
-    <a class='button login-button' href='welcome_editor'>Editor Home</a>
-    <form class='form' method="post" enctype="multipart/form-data">
+    
+  <div class="background">
+      <div class="shape"></div>
+      <div class="shape"></div>
+  </div>
+  <a href='welcome_editor'>
+    <button style='width:150px;'>Editor Home</button>
+  </a>
+  <form method='POST' enctype="multipart/form-data" style="margin-top:50px;">
         {% csrf_token %}
-        <div class=form-item>
-            <label for="{{ form.title.id_for_label }}">Title:</label>
-            {{ form.title }}
-        </div>
-        <div class=form-item>
-            <label for="{{ form.description.id_for_label }}">Description:</label>
-            {{ form.description }}
-        </div>
-        <div class=form-item>
-            <label for="{{ form.video_file.id_for_label }}">Video File:</label>
-            {{ form.video_file }}
-        </div>
-        <div class=form-item>
-            <label for="{{ form.is_public.id_for_label }}">Public(Yes/No):</label>
-            {{ form.is_public }}
-        </div>
-        <div class=form-item>
-            <label for="{{ notif_form.recipient.id_for_label }}">Send to:</label>
-            {{ notif_form.recipient }}
-        </div>
-        <div class=form-item>
-            <label for="{{ notif_form.phone.id_for_label }}">Phone number(with country code):</label>
-            {{ notif_form.phone }}
-        </div>
-        <div class=form-item>
-            <label for="{{ notif_form.message.id_for_label }}">Notification Message:</label>
-            {{ notif_form.message }}
+        <h3>Upload Video</h3>
+
+        <label for="title">Title</label>
+        {{ form.title }}
+
+        <label for="description">Description</label>
+        {{ form.description }}
+
+        <label for="video_file">Video file</label>
+        <div>
+          <input type='file' name='video_file' required id='id_video_file'>
         </div>
 
-        <button class='button login-button' type="submit">Upload</button>
+        <label for="is_public">Public</label>
+        {{form.is_public}}
+
+        <label for="recipient">Send to</label>
+        <div class="notif-form-recipient">
+          {{ notif_form.recipient }}
+        </div>
+
+        <label for="phone">Phone number(with country code)</label>
+        {{ notif_form.phone }}
+
+        <label for="message">Notification Message</label>
+        {{ notif_form.message }}
+        
+      <button type="submit">Upload</button>
+
+      <div >
         {% for message in messages %}
         <p>{{message}}</p>
         {% endfor %}
-    </form>
-    
+      </div>
+  </form>
 </body>
+</html>

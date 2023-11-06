@@ -75,7 +75,7 @@ label{
 }
 input{
     display: block;
-    height: 50px;
+    height: 30px;
     width: 100%;
     background-color: rgba(255,255,255,0.07);
     border-radius: 3px;
@@ -88,7 +88,8 @@ input{
     color: #e5e5e5;
 }
 button{
-    margin-top: 50px;
+    margin-top: 30px;
+    margin-left: 10px;
     width: 100%;
     background-color: #ffffff;
     color: #080710;
@@ -155,4 +156,10 @@ input[type="radio"]:checked,
 label[for="input[type=radio"]:checked {
     background-color: #f5f5f5;
 }
+
+
+.notif-form-recipient option {
+    background-color: black;
+    color: white;
+  }
 
