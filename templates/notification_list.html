@@ -3,26 +3,30 @@
 
 <body>
 
-    <h1>Your Notifications</h1>
-    <ul>
+    <h1 style="color:white;">Your Notifications</h1>
+    <ol style="color:white;">
         {% for notification in notifications %}
-            <li>
-                {% if not notification.is_read %}
-                    <strong>{{ notification.sender }}:</strong>
-                {% else %}
-                    {{ notification.sender }}:
-                {% endif %}
-                {{ notification.message }}
-                <br>
-                <small>{{ notification.timestamp }}</small>
-            
-                <a href="{% url 'delete_notification' notification.id %}">Delete</a>
+            <li style="border:0;">
+                <div class="list-item">
+                    {% if not notification.is_read %}
+                        <strong>{{ notification.sender }}:</strong>
+                    {% else %}
+                        {{ notification.sender }}:
+                    {% endif %}
+                    {{ notification.message }}
+                    <br>
+                    <small>{{ notification.timestamp }}</small>
+                
+                    <a href="{% url 'delete_notification' notification.id %}">
+                        <button type="submit" class='button logout-button'>Delete</button>
+                    </a>
+                </div>
             </li>
         {% empty %}
             <li>No notifications</li>
         {% endfor %}
 
-    </ul>
+    </ol>
 
     <a class='button login-button' href="{% url 'welcome_creator' %}">Creator Home</a>
 

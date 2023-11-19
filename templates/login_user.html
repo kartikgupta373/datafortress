@@ -12,6 +12,9 @@
     
 </head>
 <body>
+    <a href="/">
+        <button style="float:right; width:100px; margin-right:10px; background-color:#008CBA; color:white;">Home</button>
+    </a>
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
@@ -25,14 +28,15 @@
 
         <label for="password">Password</label>
         <input type="password" name="password" id="password">
-
+        
         <button type='submit'>Log In</button>
         {% for message in messages %}
-            <h4>{{message}}</h4>
+        <p style='color:red'>{{ message }}</p>
         {% endfor %}
-
         <p class="signup-link">Don't have an account?</p>
         <a href="signup">Register</a>
+        
+        
     </form>
 </body>
 </html>

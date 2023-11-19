@@ -2,31 +2,40 @@
 <link rel="stylesheet" href="{% static 'stylehome.css' %}">
 
 <body>
-    <ol>
+    <a class='button logout-button' href='logout' style="float:right;">Logout</a>
+    <a class='button login-button' href='upload_video' style="float:right;">Upload Video</a>
+    <br>
+    <ol style='color:white;  margin-top:10px'>
         {% for video in videos %}
-            <li>
-                <h3 class='list-item'>{{ video.title }}</h3>
-                <p class='list-item'>{{ video.description }}</p>
-                <video width="320" height="240" controls>
+            <li style="border-bottom:1px solid white;">
+                <br>
+                <video width="40%" height="40%" controls style="margin-left:10px;">
                     <source src="{{ video.video_file.url }}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
+                <h3 class='list-item'>Title: {{ video.title }}</h3>
+                <p class='list-item'>Description: {{ video.description }}</p>
                 {% if video.is_public %}
                     <p class='list-item'>Permission: Public</p>
                 {% else %}
                     <p class='list-item'>Permission: Private</p>
                 {% endif %}
-                <form method="post" action="{% url 'delete_video' video.id %}">
+                <form method="post" action="{% url 'approve_video' video.id %}" class="inline-form">
                     {% csrf_token %}
-                    <button type="submit" class='button login-button'>Delete</button>
+                    <button type="submit" class='button login-button'>Approve</button>
+                </form>
+
+                <form method="post" action="{% url 'delete_video' video.id %}" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class='button logout-button'>Delete</button>
                 </form>
             </li>
+            <br>
         {% empty %}
             <p>No videos uploaded.</p>
         {% endfor %}
     </ol>
 
-    <a class='button login-button' href='upload_video'>Upload Video</a>
 
-    <a class='button logout-button' href='logout'>Logout</a>
 </body>
+

@@ -29,8 +29,8 @@ def login_user(request):
             elif user.groups.filter(name='creator').exists():
                 return redirect('welcome_creator')
         else:
-            messages.info(request , "Invalid Credentials")
-            return redirect(request , 'login_user')
+                messages.info(request, "Invalid Credentials")
+                return redirect('login_user')
     return render(request, 'login_user.html')
 
 def welcome_editor(request):
@@ -128,6 +128,9 @@ def delete_video(request, video_id):
         os.remove(video_path)
     return redirect('video_list')
 
+@login_required
+def approve_video(request, video_id):
+    return redirect('video_list')
 
 
 @login_required
