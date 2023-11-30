@@ -16,5 +16,7 @@ urlpatterns = [
     path('approve_video/<int:video_id>/', views.approve_video, name='approve_video'),
     path('notification_list/', views.notification_list, name='notification_list'),
     path('notifications/delete/<int:notification_id>/', views.delete_notification, name='delete_notification'),
+    path('video_list', views.video_list, name='video_list'),
+    path('homepage', views.homepage, name='homepage'),
 
 ]

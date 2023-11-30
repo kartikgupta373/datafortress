@@ -4,6 +4,8 @@
 <body>
     <a class='button logout-button' href='logout' style="float:right;">Logout</a>
     <a class='button login-button' href='upload_video' style="float:right;">Upload Video</a>
+    <a class='button login-button' href="{% url 'homepage'%}" style="float:right;">Home</a>
+
     <br>
     <ol style='color:white;  margin-top:10px'>
         {% for video in videos %}

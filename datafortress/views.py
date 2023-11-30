@@ -9,13 +9,22 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.conf import settings
 from .whatsapp_utils import send_whatsapp_message
 
-
 def index(request):
     return render(request , 'index.html')
 
 def user_in_editor(user):
     return user.groups.filter(name='editor').exists()
 
+def user_in_creator(user):
+    return user.groups.filter(name='creator').exists()
+
+def homepage(request):
+    user1 = request.user
+    user1_group = user1.groups.first()
+    if user1_group is 'creator':
+        return redirect("welcome_creator")
+    else:
+        return redirect("welcome_editor")
 
 def login_user(request):
     if request.method == 'POST':
@@ -33,9 +42,11 @@ def login_user(request):
                 return redirect('login_user')
     return render(request, 'login_user.html')
 
+@user_passes_test(user_in_editor)
 def welcome_editor(request):
     return render(request, 'welcome_editor.html')
 
+@user_passes_test(user_in_creator)
 def welcome_creator(request):
     return render(request, 'welcome_creator.html')
 
@@ -132,6 +143,8 @@ def delete_video(request, video_id):
 def approve_video(request, video_id):
     return redirect('video_list')
 
+
+    
 
 @login_required
 def notification_list(request):
