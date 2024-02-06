@@ -92,9 +92,9 @@ def upload_video(request):
         if form.is_valid():
             try:
                 video = form.save(commit=False)
+                video.uploader = request.user
                 video.save()
                 messages.info(request , "Video Uploaded Successfully.")
-                
             except Exception as e:
                 error_message = f"An error occurred during file upload: {str(e)}"
                 return render(request, 'upload_error.html', {'error_message': error_message})
@@ -139,13 +139,13 @@ def notification_send(request):
 @user_passes_test(user_in_editor)
 @login_required
 def video_list_editor(request):
-    videos = Video.objects.all()
+    videos = Video.objects.filter(uploader=request.user)
     return render(request, 'video_list_editor.html', {'videos':videos})
 
 @user_passes_test(user_in_creator)
 @login_required
 def video_list_creator(request):
-    videos = Video.objects.all()
+    videos = Video.objects.filter(receiver=request.user)
     return render(request, 'video_list_creator.html', {'videos':videos})
 
 
@@ -162,7 +162,7 @@ def delete_video(request, video_id):
 
 @login_required
 def approve_video(request, video_id):
-    return redirect('video_list_editor')
+    return redirect('video_list_creator')
 
 
 @login_required

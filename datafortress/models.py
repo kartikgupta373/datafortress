@@ -1,13 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def video_file_path(instance, filename):
+    # Modify the upload path based on the receiver's username
+    return f'media/{instance.receiver.username}/{filename}'
 
 class Video(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=500)
-    video_file = models.FileField(upload_to='media/')
+    video_file = models.FileField(upload_to=video_file_path)
     is_public = models.CharField(max_length=20)
-
+    uploader = models.ForeignKey(User, on_delete=models.CASCADE, related_name='uploaded_videos', null=True)
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_videos', null=True)
     def __str__(self):
         return self.name + ": " + str(self.videofile)
     

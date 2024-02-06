@@ -63,7 +63,12 @@ class VideoForm(forms.ModelForm):
 
     class Meta:
         model = Video
-        fields = ['title', 'description', 'video_file', 'is_public']
+        fields = ['title', 'description', 'video_file', 'is_public', 'receiver']
+        
+    def __init__(self, *args, **kwargs):
+        super(VideoForm, self).__init__(*args, **kwargs)
+        # Limit the recipient choices to users in the "creator" group
+        self.fields['receiver'].queryset = User.objects.filter(groups__name='creator')
         
         
 class NotificationForm(forms.ModelForm):

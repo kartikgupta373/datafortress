@@ -23,7 +23,7 @@
   <a href='welcome_editor'>
     <button style="float:right; width:150px; margin-right:10px; background-color:#008CBA; color:white;">Editor Home</button>
   </a>
-  <a href='video_list'>
+  <a href='video_list_editor'>
     <button style="float:right; width:150px; margin-right:10px; background-color:#008CBA; color:white;">Video List</button>
   </a>
   <form method='POST' enctype="multipart/form-data" >
@@ -43,6 +43,11 @@
 
         <label for="is_public">Public</label>
         {{form.is_public}}
+
+        <label for="receiver">Send to</label>
+        <div class="notif-form-recipient">
+          {{ form.receiver }}
+        </div>
 
       <button type="submit">Upload</button>
 
