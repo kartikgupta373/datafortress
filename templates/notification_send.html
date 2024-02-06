@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Upload Video</title>
+    <title>Send Notification</title>
     <link rel="stylesheet" href="{% static 'stylelogin.css' %}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -26,26 +26,23 @@
   <a href='video_list'>
     <button style="float:right; width:150px; margin-right:10px; background-color:#008CBA; color:white;">Video List</button>
   </a>
-  <form method='POST' enctype="multipart/form-data" >
+  <form method='POST' enctype="multipart/form-data">
         {% csrf_token %}
-        <h3>Upload Video</h3>
+        <h3>Send Notification</h3>
 
-        <label for="title">Title</label>
-        {{ form.title }}
-
-        <label for="description">Description</label>
-        {{ form.description }}
-
-        <label for="video_file">Video file</label>
-        <div>
-          <input type='file' name='video_file' required id='id_video_file'>
+        <label for="recipient">Send to</label>
+        <div class="notif-form-recipient">
+          {{ notif_form.recipient }}
         </div>
 
-        <label for="is_public">Public</label>
-        {{form.is_public}}
+        <label for="phone">Phone number(with country code)</label>
+        {{ notif_form.phone }}
 
-      <button type="submit">Upload</button>
-
+        <label for="message">Notification Message</label>
+        {{ notif_form.message }}
+        
+      <button type="submit">Send Notification</button>
+        <p></p>
       <div >
         {% for message in messages %}
         <p>{{message}}</p>

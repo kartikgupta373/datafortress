@@ -18,13 +18,7 @@ def user_in_editor(user):
 def user_in_creator(user):
     return user.groups.filter(name='creator').exists()
 
-def homepage(request):
-    user1 = request.user
-    user1_group = user1.groups.first()
-    if user1_group is 'creator':
-        return redirect("welcome_creator")
-    else:
-        return redirect("welcome_editor")
+
 
 def login_user(request):
     if request.method == 'POST':
@@ -42,9 +36,11 @@ def login_user(request):
                 return redirect('login_user')
     return render(request, 'login_user.html')
 
+
 @user_passes_test(user_in_editor)
 def welcome_editor(request):
     return render(request, 'welcome_editor.html')
+
 
 @user_passes_test(user_in_creator)
 def welcome_creator(request):
@@ -93,25 +89,12 @@ def success(request):
 def upload_video(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
-        notif_form = NotificationForm(request.user, request.POST)
-        if form.is_valid() and notif_form.is_valid():
+        if form.is_valid():
             try:
-                form.save()
-                title = form.cleaned_data['title']
-                notification = notif_form.save(commit=False)
-                notification.sender = request.user
-                to_number = notif_form.cleaned_data['phone']
-                new_message = notif_form.cleaned_data['message']
-                message = f"Title: {title}, Message: {new_message}"
-                notification.save() 
-                success, error_message = send_whatsapp_message(to_number, message)
+                video = form.save(commit=False)
+                video.save()
                 messages.info(request , "Video Uploaded Successfully.")
-                if success:
-                    messages.info(request , "Notification Sent Successfully.")
-                    return redirect('upload_video')
-                else:
-                    messages.info(request, "Error sending WhatsApp notification.")
-                    return redirect('upload_video')
+                
             except Exception as e:
                 error_message = f"An error occurred during file upload: {str(e)}"
                 return render(request, 'upload_error.html', {'error_message': error_message})
@@ -120,14 +103,51 @@ def upload_video(request):
             return render(request, 'upload_error.html', {'error_message': error_message})
     else:
         form = VideoForm()
-        notif_form = NotificationForm(request.user)
-    return render(request, 'upload_video.html', {'form': form , 'notif_form' : notif_form})
+    return render(request, 'upload_video.html', {'form': form})
 
-
+@user_passes_test(user_in_editor)
 @login_required
-def video_list(request):
+def notification_send(request):
+    if request.method == 'POST':
+        notif_form = NotificationForm(request.user, request.POST)
+        if notif_form.is_valid():
+            try:
+                notification = notif_form.save(commit=False)
+                notification.sender = request.user
+                to_number = notif_form.cleaned_data['phone']
+                new_message = notif_form.cleaned_data['message']
+                message = f"New Message: {new_message}"                
+                success, error_message = send_whatsapp_message(to_number, message)
+                notification.save()
+                if success:
+                    messages.info(request , "Notification Sent Successfully.")
+                    return redirect('notification_send')
+                else:
+                    messages.info(request, "Error sending WhatsApp notification.")
+                    return redirect('notification_send')
+            except Exception as e:
+                    error_message = f"An error occurred during sending notification: {str(e)}"
+                    return render(request, 'notification_send.html', {'error_message': error_message})
+        else:
+            error_message = "Form is not valid. Please check your inputs."
+            return render(request, 'notification_send.html', {'error_message': error_message})
+    else:
+        notif_form = NotificationForm(request.user)
+    return render(request, 'notification_send.html', {'notif_form' : notif_form})
+
+
+@user_passes_test(user_in_editor)
+@login_required
+def video_list_editor(request):
     videos = Video.objects.all()
-    return render(request, 'video_list.html', {'videos':videos})
+    return render(request, 'video_list_editor.html', {'videos':videos})
+
+@user_passes_test(user_in_creator)
+@login_required
+def video_list_creator(request):
+    videos = Video.objects.all()
+    return render(request, 'video_list_creator.html', {'videos':videos})
+
 
 @login_required
 def delete_video(request, video_id):
@@ -137,14 +157,13 @@ def delete_video(request, video_id):
         video.delete()
     if os.path.exists(video_path):
         os.remove(video_path)
-    return redirect('video_list')
+    return redirect('video_list_editor')
+
 
 @login_required
 def approve_video(request, video_id):
-    return redirect('video_list')
+    return redirect('video_list_editor')
 
-
-    
 
 @login_required
 def notification_list(request):

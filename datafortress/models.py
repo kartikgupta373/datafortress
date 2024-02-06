@@ -7,7 +7,7 @@ class Video(models.Model):
     description = models.CharField(max_length=500)
     video_file = models.FileField(upload_to='media/')
     is_public = models.CharField(max_length=20)
-    
+
     def __str__(self):
         return self.name + ": " + str(self.videofile)
     

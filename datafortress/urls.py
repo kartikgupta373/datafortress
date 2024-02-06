@@ -11,12 +11,12 @@ urlpatterns = [
     path('welcome_editor', views.welcome_editor, name='welcome_editor'),
     path('welcome_creator', views.welcome_creator, name='welcome_creator'),
     path('upload_video', views.upload_video, name='upload_video'),
-    path('video_list', views.video_list, name='video_list'),
+    path('video_list_editor', views.video_list_editor, name='video_list_editor'),
+    path('video_list_creator', views.video_list_creator, name='video_list_creator'),
     path('delete_video/<int:video_id>/', views.delete_video, name='delete_video'),
     path('approve_video/<int:video_id>/', views.approve_video, name='approve_video'),
+    path('notification_send', views.notification_send, name='notification_send'),    
     path('notification_list/', views.notification_list, name='notification_list'),
     path('notifications/delete/<int:notification_id>/', views.delete_notification, name='delete_notification'),
-    path('video_list', views.video_list, name='video_list'),
-    path('homepage', views.homepage, name='homepage'),
 
 ]
