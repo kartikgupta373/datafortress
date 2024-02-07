@@ -159,7 +159,7 @@ label[for="input[type=radio"]:checked {
 
 
 .notif-form-recipient option {
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
   }
 
