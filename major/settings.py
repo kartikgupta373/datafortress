@@ -146,3 +146,6 @@ MEDIA_URL = '/'
 LOGIN_URL = 'login_user'
 
 MEDIA_SERVE_ONLY_STATIC_FILES = True
+
+CLAMAV_HOST = '127.0.0.1'  # ClamAV daemon host
+CLAMAV_PORT = 3310  # ClamAV daemon port

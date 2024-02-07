@@ -8,6 +8,10 @@ from .models import Video, Notification
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.conf import settings
 from .whatsapp_utils import send_whatsapp_message
+from major.settings import CLAMAV_HOST,CLAMAV_PORT
+import pyclamd
+
+
 
 def index(request):
     return render(request , 'index.html')
@@ -84,26 +88,45 @@ def signup(request):
 def success(request):
     return render(request , 'success.html')
 
+
+def check_video_for_threats(video_file_path):
+    try:
+        clamav = pyclamd.ClamdNetworkSocket(CLAMAV_HOST, CLAMAV_PORT)
+        scan_result = clamav.scan_file(video_file_path)
+        if scan_result is not None and scan_result[video_file_path] == 'OK':
+            return True  # File is clean
+        else:
+            return False  # File contains threats
+    except pyclamd.ConnectionError:
+        return None  # Unable to connect to ClamAV daemon
+    
+    
 @user_passes_test(user_in_editor)
 @login_required
 def upload_video(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
-            try:
-                video = form.save(commit=False)
-                video.uploader = request.user
-                video.save()
-                messages.info(request , "Video Uploaded Successfully.")
-            except Exception as e:
-                error_message = f"An error occurred during file upload: {str(e)}"
-                return render(request, 'upload_error.html', {'error_message': error_message})
+            video = form.save(commit=False)
+            video.uploader = request.user
+            video.save()
+            messages.info(request , "Video Uploaded Successfully.")
+            # Check the uploaded video file for threats
+            video_file_path = video.video_file.path
+            threat_detected = check_video_for_threats(video_file_path)
+            if threat_detected is True: # changethis to true after testing
+                messages.warning(request, "The uploaded video contains threats.")
+            elif threat_detected is None:
+                messages.error(request, "Failed to scan the video for threats.")
+            elif threat_detected is False:
+                messages.info(request, "The uploaded video has no threats.")
         else:
             error_message = "Form is not valid. Please check your inputs."
             return render(request, 'upload_error.html', {'error_message': error_message})
     else:
         form = VideoForm()
     return render(request, 'upload_video.html', {'form': form})
+
 
 @user_passes_test(user_in_editor)
 @login_required
