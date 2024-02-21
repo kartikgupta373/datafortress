@@ -103,9 +103,10 @@ def upload_video(request):
             filepath = video.video_file.path
             result = subprocess.run(["C:\Program Files\ClamAV\clamdscan.exe", "-i", filepath], capture_output=True, text=True)
             if result.returncode == 0:
-                messages.info(request, "File is clean.")
+                messages.info(request, "File checked and verified.")
             else:
                 messages.info(request, "File is infected.")
+                video.delete()
                 
         else:
             error_message = "Form is not valid. Please check your inputs."
