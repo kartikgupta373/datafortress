@@ -1,0 +1,10 @@
+django
+psycopg2
+django-phonenumber-field
+django-phonenumber-field[phonenumbers]
+pytz
+django-crispy-forms
+Pillow
+django-ckeditor
+pywhatkit
+clamd
