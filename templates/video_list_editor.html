@@ -25,7 +25,7 @@
                 {% endif %}
                 
 
-                <form method="post" action="{% url 'delete_video' video.id %}" class="inline-form">
+                <form method="post" action="{% url 'delete_video_editor' video.id %}" class="inline-form">
                     {% csrf_token %}
                     <button type="submit" class='button logout-button'>Delete</button>
                 </form>

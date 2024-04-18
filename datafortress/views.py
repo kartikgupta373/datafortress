@@ -11,7 +11,6 @@ from .whatsapp_utils import send_whatsapp_message
 import subprocess
 
 
-
 def index(request):
     return render(request , 'index.html')
 
@@ -20,8 +19,6 @@ def user_in_editor(user):
 
 def user_in_creator(user):
     return user.groups.filter(name='creator').exists()
-
-
 
 def login_user(request):
     if request.method == 'POST':
@@ -39,21 +36,17 @@ def login_user(request):
                 return redirect('login_user')
     return render(request, 'login_user.html')
 
-
 @user_passes_test(user_in_editor)
 def welcome_editor(request):
     return render(request, 'welcome_editor.html')
-
 
 @user_passes_test(user_in_creator)
 def welcome_creator(request):
     return render(request, 'welcome_creator.html')
 
-
 def logout(request):
     auth.logout(request)
     return redirect('/')
-
 
 def signup(request):
     if request.method == 'POST':
@@ -83,10 +76,8 @@ def signup(request):
         form = UserRegistrationForm()
     return render(request, 'signup.html', {'form': form})
 
-
 def success(request):
     return render(request , 'success.html')
-
 
 @user_passes_test(user_in_editor)
 @login_required
@@ -106,17 +97,13 @@ def upload_video(request):
                 messages.info(request, "File checked and verified.")
             else:
                 messages.info(request, "File is infected.")
-                video.delete()
-                
+                video.delete() 
         else:
             error_message = "Form is not valid. Please check your inputs."
             return render(request, 'upload_error.html', {'error_message': error_message})
     else:
         form = VideoForm()
     return render(request, 'upload_video.html', {'form': form})
-
-
-
 
 @user_passes_test(user_in_editor)
 @login_required
@@ -148,7 +135,6 @@ def notification_send(request):
         notif_form = NotificationForm(request.user)
     return render(request, 'notification_send.html', {'notif_form' : notif_form})
 
-
 @user_passes_test(user_in_editor)
 @login_required
 def video_list_editor(request):
@@ -161,9 +147,8 @@ def video_list_creator(request):
     videos = Video.objects.filter(receiver=request.user)
     return render(request, 'video_list_creator.html', {'videos':videos})
 
-
 @login_required
-def delete_video(request, video_id):
+def delete_video_editor(request, video_id):
     video = get_object_or_404(Video, pk=video_id)
     video_path = os.path.join(settings.MEDIA_ROOT, str(Video.video_file))
     if request.method == 'POST':
@@ -172,11 +157,19 @@ def delete_video(request, video_id):
         os.remove(video_path)
     return redirect('video_list_editor')
 
+@login_required
+def delete_video_creator(request, video_id):
+    video = get_object_or_404(Video, pk=video_id)
+    video_path = os.path.join(settings.MEDIA_ROOT, str(Video.video_file))
+    if request.method == 'POST':
+        video.delete()
+    if os.path.exists(video_path):
+        os.remove(video_path)
+    return redirect('video_list_creator')
 
 @login_required
 def approve_video(request, video_id):
     return redirect('video_list_creator')
-
 
 @login_required
 def notification_list(request):
@@ -184,11 +177,9 @@ def notification_list(request):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-timestamp')
     return render(request, 'notification_list.html', {'notifications': notifications})
 
-
 @login_required
 def delete_notification(request, notification_id):
     notification = get_object_or_404(Notification, pk=notification_id)
     if notification.recipient == request.user:
         notification.delete()
     return redirect('notification_list')
-
